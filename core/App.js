@@ -1,25 +1,43 @@
-// Essa função verifica se é a primeira vez 
-// que o usuário está acessando o app
-// e o redireciona para a página correspondente
-
 import React from 'react';
 
 import { MMKVLoader } from "react-native-mmkv-storage";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import FirstLaunch from "./firstLaunch";
 import HomeScreen from "./homeScreen";
+import InsertUsername from './createUser/insertUsername';
+import InsertTimeToCook from './createUser/insertTimeToCook';
 
 const MMKV = new MMKVLoader().initialize();
+const Stack = createNativeStackNavigator();
 
 const App = () => {
-  let isFirstAccess = !MMKV.getBool("firstAccess");
+  let hasAccount = MMKV.getBool("hasAccount");
 
-  if (!isFirstAccess){ // THIS LINE IS FALSE DURING DEVELOPMENT OF FIRST LAUNCH VIEW
-    MMKV.setBool("firstAccess", true);
-    return <FirstLaunch/>
+  let initialScreen = "Home";
+
+  if (!hasAccount){
+    initialScreen = "Welcome";
   }
 
-  return <HomeScreen />
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={initialScreen}>
+        <Stack.Screen name="Welcome" component={FirstLaunch} options={stackScreenOptions}/>
+        <Stack.Screen name="Home" component={HomeScreen} options={stackScreenOptions}/>
+        <Stack.Screen name="Start1" component={InsertUsername} options={stackScreenOptions}/>
+        <Stack.Screen name="Start2" component={InsertTimeToCook} options={stackScreenOptions}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 };
+
+const stackScreenOptions = {
+  title: "",
+  headerStyle: {
+    backgroundColor: "black"
+  }
+}
 
 export default App;

@@ -8,6 +8,7 @@ import FirstLaunch from "./firstLaunch";
 import HomeScreen from "./homeScreen";
 import InsertUsername from './createUser/insertUsername';
 import InsertTimeToCook from './createUser/insertTimeToCook';
+import InsertPrice from './createUser/insertPrice';
 
 const MMKV = new MMKVLoader().initialize();
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ const App = () => {
         <Stack.Screen name="Home" component={HomeScreen} options={stackScreenOptions}/>
         <Stack.Screen name="Start1" component={InsertUsername} options={stackScreenOptions}/>
         <Stack.Screen name="Start2" component={InsertTimeToCook} options={stackScreenOptions}/>
+        <Stack.Screen name="Start3" component={InsertPrice} options={stackScreenOptions}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

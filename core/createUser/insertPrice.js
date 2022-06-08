@@ -11,31 +11,36 @@ import {
 } from 'react-native';
 
 import CustomButton from '../comps/CustomButton';
+import Slider from '@react-native-community/slider';
 
 const MMKV = new MMKVLoader().initialize();
 
-const InsertUsername = ( { navigation } ) => {
-    const [ name, onChangeName ] = React.useState("");
-
+const InsertPrice = ( { navigation } ) => {
+    let [preco, setPreco] = React.useState(100)
     return (
         <SafeAreaView style={{flex: 1, alignSelf: "stretch"}}>
             <View style={styles.generalView}>
                 <Text style={styles.message}>
-                Para começar, como devo te chamar?
+                  Hmmmmm, e qual a faixa de preço que você deseja gastar por semana se alimentando?
                 </Text>
-                <TextInput 
-                    style={styles.nameInput}
-                    onChangeText={onChangeName}
-                    value={name}
-                    placeholder='Digite aqui seu nome'
+                <Slider
+                    value={preco}
+                    style={{width: 300, height: 50, marginTop: "10%"}}
+                    minimumValue={80}
+                    maximumValue={200}
+                    minimumTrackTintColor="#FFFFFF"
+                    maximumTrackTintColor="#000000"
+                    onValueChange={(value)=>{
+                        setPreco(value);
+                    }}
+                    step={1}
                 />
+                <Text style={styles.price}>R$ {preco}</Text>
                 <CustomButton 
                   title="Próximo"
                   onPress={() => { 
-                    if (name.length > 1){
-                      MMKV.setString("username", name);
-                      navigation.navigate("Start2");
-                    }
+                    MMKV.setInt("priceRange", preco);
+                    navigation.navigate("Start4");
                   }}
                   styles={styles.startButton}
                 />
@@ -60,6 +65,10 @@ const styles = StyleSheet.create({
       color: "white"
     },
 
+    price: {
+        fontSize: 20
+    },
+
     nameInput: {
         textAlign: "center",
         fontSize: 20,
@@ -69,7 +78,7 @@ const styles = StyleSheet.create({
     startButton: {
       button: {
         borderRadius: 50,
-        marginTop: "10%",
+        marginTop: "15%",
         backgroundColor: "#00b032",
         width: "50%",
         padding: 5
@@ -80,6 +89,7 @@ const styles = StyleSheet.create({
         color: "white"
       }
     }
-});
+  }
+);
 
-export default InsertUsername;
+export default InsertPrice;
